@@ -11,11 +11,11 @@ It consists of:
 - Project.MVC — MVC application with administration views for Makes and Models
 
 Technologies used:
-ASP.NET MVC 5
-Entity Framework 6 (Code First)
-AutoMapper 
-Ninject & Ninject.MVC5
-.NET Framework 4.8.1
+- ASP.NET MVC 5
+- Entity Framework 6 (Code First)
+- AutoMapper 
+- Ninject & Ninject.MVC5
+- .NET Framework 4.8.1
 
 **This project was created as part of a technical assessment.
 The focus was on following best practices such as clean abstraction, proper DI, async programming, and clean separation of layers.**
