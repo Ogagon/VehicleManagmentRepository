@@ -1,4 +1,4 @@
-# MonoTask
+# Vehicle managment repository
 
 The goal of the assignment was to build a minimalistic application using ASP.NET MVC and Entity Framework, following clean architecture principles and implementing CRUD functionality with sorting, filtering, and paging.
 The application manages two model entities:
