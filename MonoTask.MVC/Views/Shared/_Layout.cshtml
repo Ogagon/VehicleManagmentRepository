@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/Content/Site.css" />
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+
+
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                    @Html.ActionLink("Administration panel", "Index", "VehicleMake", null, new { @class = "navbar-brand" })
+            </div>
+
+            <div id="main-navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+
+                    <!-- Vehicle Makes Dropdown -->
+                    <li class="dropdown">
+                        <a href="@Url.Action("Index", "VehicleMake")" class="dropdown-toggle" data-toggle="dropdown">
+                            Vehicle Makes <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("Administration panel", "Index", "VehicleMake")</li>
+                            <li>@Html.ActionLink("Add new vehicle make", "Create", "VehicleMake")</li>
+                        </ul>
+                    </li>
+
+                    <!-- Vehicle Models Dropdown -->
+                    <li class="dropdown">
+                        <a href="@Url.Action("Index", "VehicleModel")" class="dropdown-toggle" data-toggle="dropdown">
+                            Vehicle Models <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("Administration panel", "Index", "VehicleModel")</li>
+                            <li>@Html.ActionLink("Add new vehicle model", "Create", "VehicleModel")</li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+        </footer>
+    </div>
+
+</body>
+</html>
