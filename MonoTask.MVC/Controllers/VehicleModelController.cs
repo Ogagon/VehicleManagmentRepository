@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MonoTask.MVC.ViewModels;
+using MonoTask.MVC.ViewModels.VehicleModel;
 using MonoTask.Service.DTO;
 using MonoTask.Service.Interfaces;
 using MonoTask.Service.Models;
@@ -28,25 +29,18 @@ namespace MonoTask.MVC.Controllers
             var query = new VehicleQuery(sortColumn, sortDescending, searchTerm, makeId);
             var pagination = new PaginationRequest(page, pageSize);
 
-            var (pagedResult, TotalItems) = await _service.GetAllVehicleModels(query, pagination);
+            var pagedResult = await _service.GetAllVehicleModels(query, pagination);
             if (pagedResult == null) return new HttpStatusCodeResult(HttpStatusCode.NotFound);
 
             SelectList makesList = new SelectList(await _service.GetAllVehicleMakes(), "Id", "Name", makeId);
 
-            VehicleModelViewModel vm = new VehicleModelViewModel
+            var indexVM = new VehicleModelIndexViewModel
             {
-                Items = _mapper.Map<List<VehicleModelViewModel>>(pagedResult),
-                CurrentPage = page,
-                PageSize = pageSize,
-                TotalItems = TotalItems,
-                CurrentSortColumn = sortColumn,
-                CurrentSortDescending = sortDescending,
-                CurrentSearchTerm = searchTerm,
-                CurrentMakeId = makeId,
-                Makes = _mapper.Map<IEnumerable<SelectListItem>>(makesList)
-            }
-            ;
-            return View(vm);
+                PagingResult = _mapper.Map<PagingResult<VehicleModelViewModel>>(pagedResult),
+                Query = query,
+                SelectMakes = makesList
+            };
+            return View(indexVM);
         }
 
         // GET: VehicleModels/Details/5

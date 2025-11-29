@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MonoTask.MVC.ViewModels;
+using MonoTask.MVC.ViewModels.VehicleMake;
 using MonoTask.Service.DTO;
 using MonoTask.Service.Interfaces;
 using MonoTask.Service.Models;
@@ -27,24 +28,22 @@ namespace MonoTask.MVC.Controllers
             var query = new VehicleQuery(sortColumn, sortDescending, searchTerm, makeId);
             var pagination = new PaginationRequest(page, pageSize);
 
-            var (PagedMakes, TotalItems) = await _service.GetVehicleMakesByParameters(query, pagination);
+            var PagedMakes = await _service.GetVehicleMakesByParameters(query, pagination);
             if (PagedMakes == null) return new HttpStatusCodeResult(HttpStatusCode.NotFound);
 
-            List<VehicleMake> selectMakes = await _service.GetAllVehicleMakes();
+            List<VehicleMake> allMakes = await _service.GetAllVehicleMakes();
+            if (allMakes == null) return new HttpStatusCodeResult(HttpStatusCode.NotFound);
 
-            VehicleMakeViewModel vm = new VehicleMakeViewModel
+            var selectMakes = new SelectList(allMakes, "Id", "Name", makeId);
+            VehicleMakeIndexViewModel indexVM= new VehicleMakeIndexViewModel
             {
-                Items = _mapper.Map<List<VehicleMakeViewModel>>(PagedMakes),
-                CurrentPage = page,
-                PageSize = pageSize,
-                TotalItems = TotalItems,
-                CurrentMakeId = makeId,
-                CurrentSearchTerm = searchTerm,
-                CurrentSortColumn = sortColumn,
-                CurrentSortDescending = sortDescending,
-                SelectMakes = new SelectList(selectMakes, "Id", "Name", makeId)
+                PagingResult = _mapper.Map<PagingResult<VehicleMakeViewModel>>(PagedMakes),
+                SelectMakes = selectMakes,
+                Query = query
+
             };
-            return View(vm);
+
+            return View(indexVM);
         }
         public ActionResult Create()
         {

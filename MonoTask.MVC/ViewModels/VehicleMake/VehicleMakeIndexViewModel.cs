@@ -1,6 +1,7 @@
 ﻿using MonoTask.Service.DTO;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -9,6 +10,7 @@ namespace MonoTask.MVC.ViewModels.VehicleMake
 {
     public class VehicleMakeIndexViewModel
     {
+        public VehicleMakeViewModel DataModel { get; set; }
         public PagingResult<VehicleMakeViewModel> PagingResult { get; set; }
         public VehicleQuery Query { get; set; }
         public SelectList SelectMakes { get; set; }

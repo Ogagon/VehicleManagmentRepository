@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace MonoTask.MVC.ViewModels
 {
-    public class VehicleModelViewModel : PagedResult<VehicleModelViewModel>
+    public class VehicleModelViewModel
     {
         public int Id { get; set; }
         public int MakeId { get; set; }

@@ -30,20 +30,26 @@ namespace MonoTask.Service.Services
             var model = await _context.VehicleMakes.Include(m => m.Models).ToListAsync();
             return model;
         }
-        public async Task<(List<VehicleMake> Makes, int TotalItems)> GetVehicleMakesByParameters(VehicleQuery query, PaginationRequest pagination)
+        public async Task<PagingResult<VehicleMake>> GetVehicleMakesByParameters(VehicleQuery query, PaginationRequest pagination)
         {
             var fetch = _context.VehicleMakes.Include(m => m.Models);
             if (query.CurrentMakeId.HasValue)
             {
                 fetch = fetch.Where(m => m.Id == query.CurrentMakeId);
             }
-            var filter = FilterVehicleMakesBySearchTerm(fetch, query.CurrentSearchTerm);
-            var sort = SortVehicleMakes(filter, query.CurrentSortColumn, query.CurrentSortDescending);
+            if (!string.IsNullOrWhiteSpace(query.CurrentSearchTerm)) fetch = fetch.Where(
+                o => o.Name.Contains(query.CurrentSearchTerm)
+                || o.Abrv.Contains(query.CurrentSearchTerm)
+                );
+            
+            var orderByClause = query.CurrentSortDescending ? query.CurrentSortColumn + " desc" : query.CurrentSortColumn;
+            var sort = fetch.OrderBy(orderByClause);
 
             var totalCount = await sort.CountAsync();
             var items = await sort.Skip((pagination.Page - 1) * pagination.PageSize).Take(pagination.PageSize).ToListAsync();
 
-            return (items, totalCount);
+            var pagedResult = new PagingResult<VehicleMake>(items, totalCount, pagination.Page, pagination.PageSize);
+            return pagedResult;
         }
         public async Task<VehicleMake> GetVehicleMakeById(int? id)
         {
@@ -96,19 +102,27 @@ namespace MonoTask.Service.Services
             var model = await _context.VehicleModels.Include(m => m.Make).ToListAsync();
             return model;
         }
-        public async Task<(List<VehicleModel> Models, int TotalCount)> GetAllVehicleModels(VehicleQuery query, PaginationRequest pagination)
+        public async Task<PagingResult<VehicleModel>> GetAllVehicleModels(VehicleQuery query, PaginationRequest pagination)
         {
             var fetch = _context.VehicleModels.Include(m => m.Make);
             if (query.CurrentMakeId.HasValue)
             {
                 fetch = fetch.Where(m => m.MakeId == query.CurrentMakeId);
             }
-            var filter = FilterVehicleModelsBySearchTerm(fetch, query.CurrentSearchTerm);
-            var sort = SortVehicleModels(filter, query.CurrentSortColumn, query.CurrentSortDescending);
+            if (!string.IsNullOrWhiteSpace(query.CurrentSearchTerm)) fetch = fetch.Where(
+                o => o.Name.Contains(query.CurrentSearchTerm)
+                || o.Abrv.Contains(query.CurrentSearchTerm)
+                || o.Make.Name.Contains(query.CurrentSearchTerm)
+            ); ;
+            string orderByClause = query.CurrentSortDescending ? query.CurrentSortColumn + " desc" : query.CurrentSortColumn;
+
+            var sort = fetch.OrderBy(orderByClause);
+
             var totalCount = await sort.CountAsync(); // total before paging
             var items = await sort.Skip((pagination.Page - 1) * pagination.PageSize).Take(pagination.PageSize).ToListAsync();
-
-            return (items, totalCount);
+            var pagedResult = new PagingResult<VehicleModel>(items, totalCount, pagination.Page, pagination.PageSize);
+            
+            return pagedResult;
         }
         public async Task<VehicleModel> GetVehicleModelById(int? id)
         {
@@ -154,63 +168,6 @@ namespace MonoTask.Service.Services
                 (m => m.Name.Equals(vehicleModel.Name, StringComparison.OrdinalIgnoreCase)
                 || m.Abrv.Equals(vehicleModel.Abrv, StringComparison.OrdinalIgnoreCase)
                 );
-        }
-        #endregion
-        #region Sort and filter
-        public IQueryable<VehicleMake> SortVehicleMakes(IQueryable<VehicleMake> listToSort, string sortColumn, bool descending)
-        {
-            if (string.IsNullOrEmpty(sortColumn))
-            {
-                sortColumn = "Name";
-            }
-            var orderByClause = descending ? sortColumn + " desc" : sortColumn;
-
-            return listToSort.OrderBy(orderByClause);
-        }
-        public IQueryable<VehicleModel> SortVehicleModels(IQueryable<VehicleModel> listToSort, string sortColumn, bool descending)
-        {
-            Dictionary<string, string> allowedSortingColumns = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
-            {
-                { "Name", "Name" },
-                { "Abrv", "Abrv" },
-                { "Make", "Make.Name" }
-            };
-
-            string mappedSortColumn;
-            if (!allowedSortingColumns.TryGetValue(sortColumn, out mappedSortColumn))
-            {
-                mappedSortColumn = "Name";
-            }
-            string orderByClause = descending ? mappedSortColumn + " desc" : mappedSortColumn;
-
-            return listToSort.Include(o => o.Make).OrderBy(orderByClause);
-        }
-        public IQueryable<VehicleMake> FilterVehicleMakesBySearchTerm(IQueryable<VehicleMake> listToFilter, string searchTerm)
-        {
-            if (string.IsNullOrWhiteSpace(searchTerm)) return listToFilter;
-
-            searchTerm = searchTerm.ToLower();
-
-            // Get all public instance properties that are strings, except "Id"
-
-            return listToFilter.Where(
-                o => o.Name.Contains(searchTerm)
-                || o.Abrv.Contains(searchTerm)
-            );
-        }
-        public IQueryable<VehicleModel> FilterVehicleModelsBySearchTerm(IQueryable<VehicleModel> listToFilter, string searchTerm)
-        {
-            if (string.IsNullOrWhiteSpace(searchTerm)) return listToFilter;
-
-            searchTerm = searchTerm.ToLower();
-
-            // Get all public instance properties that are strings, except "Id"
-
-            return listToFilter.Include(o => o.Make).Where(
-                o => o.Name.Contains(searchTerm)
-                || o.Abrv.Contains(searchTerm)
-                || o.Make.Name.Contains(searchTerm)
-            );
         }
         #endregion
     }

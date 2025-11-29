@@ -14,6 +14,12 @@ namespace MonoTask.Service.DTO
         public int TotalItems { get; set; }
         public int TotalPages =>
             (int)Math.Ceiling((double)TotalItems / PageSize);
-
+        public PagingResult(List<T> items, int totalItems, int currentPage, int pageSize)
+        {
+            Items = items;
+            CurrentPage = currentPage;
+            PageSize = pageSize;
+            TotalItems = totalItems;
+        }
     }
 }

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MonoTask.MVC.ViewModels
 {
-    public class VehicleMakeViewModel : PagedResult<VehicleMakeViewModel>
+    public class VehicleMakeViewModel
     {
         public int Id { get; set; }
         [Required]

@@ -1,4 +1,4 @@
-﻿@model MonoTask.MVC.ViewModels.VehicleModelViewModel
+﻿@model MonoTask.MVC.ViewModels.VehicleModel.VehicleModelIndexViewModel
 
 @{
     ViewBag.Title = "Vehicle Models administration panel";
@@ -16,8 +16,8 @@
     </div>
 }
 <form method="get" action="@Url.Action("Index")">
-    @Html.DropDownList("makeId", Model.Makes, "All makes", new { @class = "form-control", onchange = "submit()" })
-    <input type="text" name="searchTerm" value="@Model.CurrentSearchTerm" placeholder="Search..." />
+    @Html.DropDownList("makeId", Model.SelectMakes, "All makes", new { @class = "form-control", onchange = "submit()" })
+    <input type="text" name="searchTerm" value="@Model.Query.CurrentSearchTerm" placeholder="Search..." />
     <button type="submit">Search</button>
     <a href="@Url.Action("Index")">Clear Filter</a>
 </form>
@@ -27,36 +27,36 @@
             @Html.ActionLink("Make", "Index", new
        {
            sortColumn = "Make",
-           sortDescending = Model.CurrentSortColumn == "Make"
-                      ? !Model.CurrentSortDescending
+           sortDescending = Model.Query.CurrentSortColumn == "Make.Name"
+                      ? !Model.Query.CurrentSortDescending
                       : false,
-           searchTerm = Model.CurrentSearchTerm,
-           makeId = Model.CurrentMakeId
+           searchTerm = Model.Query.CurrentSearchTerm,
+           makeId = Model.Query.CurrentMakeId
 
        })
         </th>
         <th>
-            @Html.ActionLink(Html.DisplayNameFor(m => m.Name).ToString(), "Index", new
+            @Html.ActionLink(Html.DisplayNameFor(m => m.DataModel.Name).ToString(), "Index", new
        {
            sortColumn = nameof(MonoTask.MVC.ViewModels.VehicleModelViewModel.Name),
-           sortDescending = Model.CurrentSortColumn == nameof(MonoTask.MVC.ViewModels.VehicleModelViewModel.Name)
-                      ? !Model.CurrentSortDescending
+           sortDescending = Model.Query.CurrentSortColumn == nameof(MonoTask.MVC.ViewModels.VehicleModelViewModel.Name)
+                      ? !Model.Query.CurrentSortDescending
                       : false,
-           searchTerm = Model.CurrentSearchTerm,
-           makeId = Model.CurrentMakeId
+           searchTerm = Model.Query.CurrentSearchTerm,
+           makeId = Model.Query.CurrentMakeId
 
        })
 
         </th>
         <th>
-            @Html.ActionLink(Html.DisplayNameFor(m => m.Abrv).ToString(), "Index", new
+            @Html.ActionLink(Html.DisplayNameFor(m => m.DataModel.Abrv).ToString(), "Index", new
        {
            sortColumn = nameof(MonoTask.MVC.ViewModels.VehicleModelViewModel.Abrv),
-           sortDescending = Model.CurrentSortColumn == nameof(MonoTask.MVC.ViewModels.VehicleModelViewModel.Abrv)
-                      ? !Model.CurrentSortDescending
+           sortDescending = Model.Query.CurrentSortColumn == nameof(MonoTask.MVC.ViewModels.VehicleModelViewModel.Abrv)
+                      ? !Model.Query.CurrentSortDescending
                       : false,
-           searchTerm = Model.CurrentSearchTerm,
-           makeId = Model.CurrentMakeId
+           searchTerm = Model.Query.CurrentSearchTerm,
+           makeId = Model.Query.CurrentMakeId
 
        })
 
@@ -64,7 +64,7 @@
         <th>Actions</th>
     </tr>
 
-    @foreach (var item in Model.Items)
+    @foreach (var item in Model.PagingResult.Items)
     {
         <tr>
             <td>
@@ -86,31 +86,31 @@
 
 </table>
 <!-- Pagination -->
-@if ((int)Model.TotalItems > (int)Model.PageSize)
+@if ((int)Model.PagingResult.TotalItems > (int)Model.PagingResult.PageSize)
 {
-    var totalPages = Model.TotalPages;
+    var totalPages = Model.PagingResult.TotalPages;
     <div class="pagination">
-        @if (Model.CurrentPage > 1)
+        @if (Model.PagingResult.CurrentPage > 1)
         {
             <a href="@Url.Action("Index", new
                 {
-                    page = Model.CurrentPage - 1,
-                    sortColumn = Model.CurrentSortColumn,
-                    sortDescending = Model.CurrentSortDescending,
-                    searchTerm = Model.CurrentSearchTerm
+                    page = Model.PagingResult.CurrentPage - 1,
+                    sortColumn = Model.Query.CurrentSortColumn,
+                    sortDescending = Model.Query.CurrentSortDescending,
+                    searchTerm = Model.Query.CurrentSearchTerm
                 })">Prev</a>
         }
 
-        Page @Model.CurrentPage of @totalPages
+        Page @Model.PagingResult.CurrentPage of @totalPages
 
-        @if (Model.CurrentPage < totalPages)
+        @if (Model.PagingResult.CurrentPage < totalPages)
         {
             <a href="@Url.Action("Index", new
                 {
-                    page = Model.CurrentPage + 1,
-                    sortColumn = Model.CurrentSortColumn,
-                    sortDescending = Model.CurrentSortDescending,
-                    searchTerm = Model.CurrentSearchTerm
+                    page = Model.PagingResult.CurrentPage + 1,
+                    sortColumn = Model.Query.CurrentSortColumn,
+                    sortDescending = Model.Query.CurrentSortDescending,
+                    searchTerm = Model.Query.CurrentSearchTerm
                 })">Next</a>
         }
     </div>

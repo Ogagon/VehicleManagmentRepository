@@ -9,7 +9,8 @@ namespace MonoTask.MVC.ViewModels.VehicleModel
 {
     public class VehicleModelIndexViewModel
     {
-        public PagingResult<VehicleMakeViewModel> PagingResult { get; set; }
+        public VehicleModelViewModel DataModel { get; set; }
+        public PagingResult<VehicleModelViewModel> PagingResult { get; set; }
         public VehicleQuery Query { get; set; }
         public SelectList SelectMakes { get; set; }
     }
