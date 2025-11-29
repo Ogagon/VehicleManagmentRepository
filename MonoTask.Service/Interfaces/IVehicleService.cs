@@ -1,4 +1,5 @@
-﻿using MonoTask.Service.Models;
+﻿using MonoTask.Service.DTO;
+using MonoTask.Service.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,7 +10,7 @@ namespace MonoTask.Service.Interfaces
     {
         // VehicleMake
         Task<List<VehicleMake>> GetAllVehicleMakes();
-        Task<(List<VehicleMake> Makes, int TotalItems)> GetVehicleMakesByParameters(string searchTerm, bool descending, string sortColumn, int? makeId, int page, int pageSize);
+        Task<(List<VehicleMake> Makes, int TotalItems)> GetVehicleMakesByParameters(VehicleQuery query, int page, int pageSize);
         Task<VehicleMake> GetVehicleMakeById(int? id);
         Task<bool> CreateVehicleMake(VehicleMake make);
         Task<bool> EditVehicleMake(VehicleMake editedVehicleMake);
@@ -18,7 +19,7 @@ namespace MonoTask.Service.Interfaces
 
         // VehicleModel
         Task<List<VehicleModel>> GetVehicleModels();
-        Task<(List<VehicleModel> Models, int TotalCount)> GetAllVehicleModels(string searchTerm, bool descending, string sortColumn, int? makeId, int page, int pageSize);
+        Task<(List<VehicleModel> Models, int TotalCount)> GetAllVehicleModels(VehicleQuery query, int page, int pageSize);
         Task<VehicleModel> GetVehicleModelById(int? id);
         Task<bool> CreateVehicleModel(VehicleModel model);
         Task<bool> EditVehicleModel(VehicleModel editedVehicleModel);

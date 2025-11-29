@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MonoTask.MVC.ViewModels;
+using MonoTask.Service.DTO;
 using MonoTask.Service.Interfaces;
 using MonoTask.Service.Models;
 using System;
@@ -23,7 +24,8 @@ namespace MonoTask.MVC.Controllers
         public async Task<ActionResult> Index(string sortColumn, string searchTerm, int? makeId, bool sortDescending = false, int page = 1, int pageSize = 10)
         {
             if (string.IsNullOrEmpty(sortColumn)) sortColumn = "Name";
-            var (PagedMakes, TotalItems) = await _service.GetVehicleMakesByParameters(searchTerm, sortDescending, sortColumn, makeId, page, pageSize);
+            var query = new VehicleQuery(sortColumn, sortDescending, searchTerm, makeId);
+            var (PagedMakes, TotalItems) = await _service.GetVehicleMakesByParameters(query, page, pageSize);
             if (PagedMakes == null) return new HttpStatusCodeResult(HttpStatusCode.NotFound);
 
             List<VehicleMake> selectMakes = await _service.GetAllVehicleMakes();

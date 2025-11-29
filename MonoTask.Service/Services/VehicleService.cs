@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MonoTask.Service.Context;
+using MonoTask.Service.DTO;
 using MonoTask.Service.Interfaces;
 using MonoTask.Service.Models;
 using System;
@@ -29,15 +30,15 @@ namespace MonoTask.Service.Services
             var model = await _context.VehicleMakes.Include(m => m.Models).ToListAsync();
             return model;
         }
-        public async Task<(List<VehicleMake> Makes, int TotalItems)> GetVehicleMakesByParameters(string searchTerm, bool descending, string sortColumn, int? makeId, int page, int pageSize)
+        public async Task<(List<VehicleMake> Makes, int TotalItems)> GetVehicleMakesByParameters(VehicleQuery query, int page, int pageSize)
         {
             var fetch = _context.VehicleMakes.Include(m => m.Models);
-            if (makeId.HasValue)
+            if (query.CurrentMakeId.HasValue)
             {
-                fetch = fetch.Where(m => m.Id == makeId);
+                fetch = fetch.Where(m => m.Id == query.CurrentMakeId);
             }
-            var filter = FilterVehicleMakesBySearchTerm(fetch, searchTerm);
-            var sort = SortVehicleMakes(filter, sortColumn, descending);
+            var filter = FilterVehicleMakesBySearchTerm(fetch, query.CurrentSearchTerm);
+            var sort = SortVehicleMakes(filter, query.CurrentSortColumn, query.CurrentSortDescending);
 
             var totalCount = await sort.CountAsync();
             var items = await sort.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
@@ -95,15 +96,15 @@ namespace MonoTask.Service.Services
             var model = await _context.VehicleModels.Include(m => m.Make).ToListAsync();
             return model;
         }
-        public async Task<(List<VehicleModel> Models, int TotalCount)> GetAllVehicleModels(string searchTerm, bool descending, string sortColumn, int? makeId, int page, int pageSize)
+        public async Task<(List<VehicleModel> Models, int TotalCount)> GetAllVehicleModels(VehicleQuery query, int page, int pageSize)
         {
             var fetch = _context.VehicleModels.Include(m => m.Make);
-            if (makeId.HasValue)
+            if (query.CurrentMakeId.HasValue)
             {
-                fetch = fetch.Where(m => m.MakeId == makeId);
+                fetch = fetch.Where(m => m.MakeId == query.CurrentMakeId);
             }
-            var filter = FilterVehicleModelsBySearchTerm(fetch, searchTerm);
-            var sort = SortVehicleModels(filter, sortColumn, descending);
+            var filter = FilterVehicleModelsBySearchTerm(fetch, query.CurrentSearchTerm);
+            var sort = SortVehicleModels(filter, query.CurrentSortColumn, query.CurrentSortDescending);
             var totalCount = await sort.CountAsync(); // total before paging
             var items = await sort.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
 
