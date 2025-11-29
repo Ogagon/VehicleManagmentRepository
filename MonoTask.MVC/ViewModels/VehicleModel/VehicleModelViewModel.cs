@@ -12,10 +12,12 @@ namespace MonoTask.MVC.ViewModels
         public int MakeId { get; set; }
         [Required]
         [MaxLength(100)]
+        [MinLength(2)]
         [DisplayName("Model Name")]
         public string Name { get; set; }
         [Required]
         [MaxLength(20)]
+        [MinLength(2)]
         [DisplayName("Abbreviation")]
         public string Abrv { get; set; }
         [ForeignKey("MakeId")]

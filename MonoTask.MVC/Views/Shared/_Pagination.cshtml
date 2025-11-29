@@ -1,0 +1,29 @@
+﻿@if ((int)Model.PagingResult.TotalItems > (int)Model.PagingResult.PageSize)
+{
+    var totalPages = Model.PagingResult.TotalPages;
+    <div class="pagination">
+        @if (Model.PagingResult.CurrentPage > 1)
+        {
+            <a href="@Url.Action("Index", new
+                {
+                    page = Model.PagingResult.CurrentPage - 1,
+                    sortColumn = Model.Query.CurrentSortColumn,
+                    sortDescending = Model.Query.CurrentSortDescending,
+                    searchTerm = Model.Query.CurrentSearchTerm
+                })">Prev</a>
+        }
+
+        Page @Model.PagingResult.CurrentPage of @totalPages
+
+        @if (Model.PagingResult.CurrentPage < totalPages)
+        {
+            <a href="@Url.Action("Index", new
+                {
+                    page = Model.PagingResult.CurrentPage + 1,
+                    sortColumn = Model.Query.CurrentSortColumn,
+                    sortDescending = Model.Query.CurrentSortDescending,
+                    searchTerm = Model.Query.CurrentSearchTerm
+                })">Next</a>
+        }
+    </div>
+}

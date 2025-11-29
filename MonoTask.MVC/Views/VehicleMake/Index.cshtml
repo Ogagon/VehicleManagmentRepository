@@ -9,12 +9,8 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-@if (TempData["Message"] != null)
-{
-    <div class="alert alert-@TempData["MessageType"]">
-        @TempData["Message"]
-    </div>
-}
+@Html.Partial("_AlertMessage")
+
 <form method="get" action="@Url.Action("Index")">
     @Html.DropDownList("makeId", Model.SelectMakes, "All makes", new { @class = "form-control", onchange = "submit()" })
     <input type="text" name="searchTerm" value="@Model.Query.CurrentSearchTerm" placeholder="Search..." />
@@ -92,34 +88,4 @@
 
 
 <!-- Pagination -->
-@if (Model.PagingResult.TotalItems > Model.PagingResult.PageSize)
-{
-    {
-        var totalPages = Model.PagingResult.TotalPages;
-        <div class="pagination">
-            @if (Model.PagingResult.CurrentPage > 1)
-            {
-                <a href="@Url.Action("Index", new
-                {
-                    page = Model.PagingResult.CurrentPage - 1,
-                    sortColumn = Model.Query.CurrentSortColumn,
-                    sortDescending = Model.Query.CurrentSortDescending,
-                    searchTerm = Model.Query.CurrentSearchTerm
-                })">Prev</a>
-            }
-
-            Page @Model.PagingResult.CurrentPage of @totalPages
-
-            @if (Model.PagingResult.CurrentPage < totalPages)
-            {
-                <a href="@Url.Action("Index", new
-                {
-                    page = Model.PagingResult.CurrentPage + 1,
-                    sortColumn = Model.Query.CurrentSortColumn,
-                    sortDescending = Model.Query.CurrentSortDescending,
-                    searchTerm = Model.Query.CurrentSearchTerm
-                })">Next</a>
-            }
-        </div>
-    }
-}
+@Html.Partial("_Pagination")
