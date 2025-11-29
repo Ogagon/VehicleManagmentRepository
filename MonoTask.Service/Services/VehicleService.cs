@@ -88,9 +88,14 @@ namespace MonoTask.Service.Services
         }
         public async Task<bool> CheckVehicleMakeForDuplicates(VehicleMake vehicleMake)
         {
-            return await _context.VehicleMakes.Where(o => o.Id != vehicleMake.Id).AnyAsync
-                (m => m.Name.Equals(vehicleMake.Name, StringComparison.OrdinalIgnoreCase)
-                || m.Abrv.Equals(vehicleMake.Abrv, StringComparison.OrdinalIgnoreCase));
+            var query = _context.VehicleMakes.Where(o => o.Id != vehicleMake.Id);
+            
+            var exists = await query.AnyAsync(m => 
+            m.Name.ToLower() == vehicleMake.Name.ToLower() ||
+            m.Abrv.ToLower() == vehicleMake.Abrv.ToLower());
+
+            return exists;
+
         }
         #endregion
         #region VehicleModel
@@ -164,10 +169,13 @@ namespace MonoTask.Service.Services
 
         public async Task<bool> CheckVehicleModelForDuplicates(VehicleModel vehicleModel)
         {
-            return await _context.VehicleModels.Where(o => o.Id != vehicleModel.Id && o.MakeId == vehicleModel.MakeId).AnyAsync
-                (m => m.Name.Equals(vehicleModel.Name, StringComparison.OrdinalIgnoreCase)
-                || m.Abrv.Equals(vehicleModel.Abrv, StringComparison.OrdinalIgnoreCase)
-                );
+            var query = _context.VehicleModels.Where(o => o.Id != vehicleModel.Id && o.MakeId == vehicleModel.MakeId);
+
+            var exists = await query.AnyAsync(m => 
+            m.Name.ToLower() == vehicleModel.Name.ToLower() ||
+            m.Abrv.ToLower() == vehicleModel.Abrv.ToLower());
+
+            return exists;
         }
         #endregion
     }

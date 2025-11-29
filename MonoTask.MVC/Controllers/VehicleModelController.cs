@@ -80,17 +80,16 @@ namespace MonoTask.MVC.Controllers
         {
             if (!ModelState.IsValid)
             {
-                List<VehicleMake> makes = await _service.GetAllVehicleMakes();
-                vm.Makes = _mapper.Map<IEnumerable<SelectListItem>>(makes);
-
+                await PopulateMakesAsync(vm);
                 return View(vm);
             }
             VehicleModel newVehicleModel = _mapper.Map<VehicleModel>(vm);
             bool attemptCreate = await _service.CreateVehicleModel(newVehicleModel);
             if (!attemptCreate)
             {
+                await PopulateMakesAsync(vm);
                 SetTempMessage($"Failed to create Vehicle model {newVehicleModel.Name}({newVehicleModel.Abrv}). Most likely, the specified model already exists!", "danger");
-                return RedirectToAction("Index");
+                return View(vm);
             }
             SetTempMessage($"Vehicle model {newVehicleModel.Name}({newVehicleModel.Abrv}) created successfully!");
             if (submitButton == "Save and Add another")
@@ -114,13 +113,7 @@ namespace MonoTask.MVC.Controllers
             }
             VehicleModelViewModel vm = _mapper.Map<VehicleModelViewModel>(vehicleModel);
 
-            List<VehicleMake> makes = await _service.GetAllVehicleMakes();
-            if (makes == null)
-            {
-                return HttpNotFound();
-            }
-
-            vm.Makes = _mapper.Map<IEnumerable<SelectListItem>>(makes);
+            await PopulateMakesAsync(vm);
             return View(vm);
         }
 
@@ -141,13 +134,7 @@ namespace MonoTask.MVC.Controllers
             else
             {
                 ModelState.AddModelError("", "The input vehicle make already exists!");
-                List<VehicleMake> makes = await _service.GetAllVehicleMakes();
-                if (makes == null)
-                {
-                    return HttpNotFound();
-                }
-
-                vm.Makes = _mapper.Map<IEnumerable<SelectListItem>>(makes);
+                await PopulateMakesAsync(vm);
                 return View(vm);
             }
         }
@@ -204,6 +191,12 @@ namespace MonoTask.MVC.Controllers
         {
             TempData["Message"] = message;
             TempData["MessageType"] = type;
+        }
+        private async Task<VehicleModelViewModel> PopulateMakesAsync(VehicleModelViewModel vm)
+        {
+            var makes = await _service.GetAllVehicleMakes();
+            vm.Makes = _mapper.Map<IEnumerable<SelectListItem>>(makes);
+            return vm;
         }
     }
 }

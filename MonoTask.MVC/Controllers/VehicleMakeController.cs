@@ -40,7 +40,6 @@ namespace MonoTask.MVC.Controllers
                 PagingResult = _mapper.Map<PagingResult<VehicleMakeViewModel>>(PagedMakes),
                 SelectMakes = selectMakes,
                 Query = query
-
             };
 
             return View(indexVM);
