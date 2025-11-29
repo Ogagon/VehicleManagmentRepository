@@ -102,11 +102,6 @@ namespace MonoTask.Service.Services
         //================================//
         //   VehicleModel functionalities  //
         //================================//
-        public async Task<List<VehicleModel>> GetVehicleModels()
-        {
-            var model = await _context.VehicleModels.Include(m => m.Make).ToListAsync();
-            return model;
-        }
         public async Task<PagingResult<VehicleModel>> GetAllVehicleModels(VehicleQuery query, PaginationRequest pagination)
         {
             var fetch = _context.VehicleModels.Include(m => m.Make);

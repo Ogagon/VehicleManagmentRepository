@@ -18,7 +18,6 @@ namespace MonoTask.Service.Interfaces
         Task<bool> CheckVehicleMakeForDuplicates(VehicleMake vehicleMake);
 
         // VehicleModel
-        Task<List<VehicleModel>> GetVehicleModels();
         Task<PagingResult<VehicleModel>> GetAllVehicleModels(VehicleQuery query, PaginationRequest pagination);
         Task<VehicleModel> GetVehicleModelById(int? id);
         Task<bool> CreateVehicleModel(VehicleModel model);
