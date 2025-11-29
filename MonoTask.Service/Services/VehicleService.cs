@@ -30,7 +30,7 @@ namespace MonoTask.Service.Services
             var model = await _context.VehicleMakes.Include(m => m.Models).ToListAsync();
             return model;
         }
-        public async Task<(List<VehicleMake> Makes, int TotalItems)> GetVehicleMakesByParameters(VehicleQuery query, int page, int pageSize)
+        public async Task<(List<VehicleMake> Makes, int TotalItems)> GetVehicleMakesByParameters(VehicleQuery query, PaginationRequest pagination)
         {
             var fetch = _context.VehicleMakes.Include(m => m.Models);
             if (query.CurrentMakeId.HasValue)
@@ -41,7 +41,7 @@ namespace MonoTask.Service.Services
             var sort = SortVehicleMakes(filter, query.CurrentSortColumn, query.CurrentSortDescending);
 
             var totalCount = await sort.CountAsync();
-            var items = await sort.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+            var items = await sort.Skip((pagination.Page - 1) * pagination.PageSize).Take(pagination.PageSize).ToListAsync();
 
             return (items, totalCount);
         }
@@ -96,7 +96,7 @@ namespace MonoTask.Service.Services
             var model = await _context.VehicleModels.Include(m => m.Make).ToListAsync();
             return model;
         }
-        public async Task<(List<VehicleModel> Models, int TotalCount)> GetAllVehicleModels(VehicleQuery query, int page, int pageSize)
+        public async Task<(List<VehicleModel> Models, int TotalCount)> GetAllVehicleModels(VehicleQuery query, PaginationRequest pagination)
         {
             var fetch = _context.VehicleModels.Include(m => m.Make);
             if (query.CurrentMakeId.HasValue)
@@ -106,7 +106,7 @@ namespace MonoTask.Service.Services
             var filter = FilterVehicleModelsBySearchTerm(fetch, query.CurrentSearchTerm);
             var sort = SortVehicleModels(filter, query.CurrentSortColumn, query.CurrentSortDescending);
             var totalCount = await sort.CountAsync(); // total before paging
-            var items = await sort.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+            var items = await sort.Skip((pagination.Page - 1) * pagination.PageSize).Take(pagination.PageSize).ToListAsync();
 
             return (items, totalCount);
         }

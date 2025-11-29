@@ -25,7 +25,9 @@ namespace MonoTask.MVC.Controllers
         {
             if (string.IsNullOrEmpty(sortColumn)) sortColumn = "Name";
             var query = new VehicleQuery(sortColumn, sortDescending, searchTerm, makeId);
-            var (PagedMakes, TotalItems) = await _service.GetVehicleMakesByParameters(query, page, pageSize);
+            var pagination = new PaginationRequest(page, pageSize);
+
+            var (PagedMakes, TotalItems) = await _service.GetVehicleMakesByParameters(query, pagination);
             if (PagedMakes == null) return new HttpStatusCodeResult(HttpStatusCode.NotFound);
 
             List<VehicleMake> selectMakes = await _service.GetAllVehicleMakes();
