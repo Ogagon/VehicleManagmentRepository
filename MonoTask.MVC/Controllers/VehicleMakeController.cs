@@ -24,15 +24,11 @@ namespace MonoTask.MVC.Controllers
         // GET: VehicleModel
         public async Task<ActionResult> Index(string sortColumn, string searchTerm, int? makeId, bool sortDescending = false, int page = 1, int pageSize = 10)
         {
-            if (string.IsNullOrEmpty(sortColumn)) sortColumn = "Name";
             var query = new VehicleQuery(sortColumn, sortDescending, searchTerm, makeId);
             var pagination = new PaginationRequest(page, pageSize);
 
             var PagedMakes = await _service.GetVehicleMakesByParameters(query, pagination);
-            if (PagedMakes == null) return new HttpStatusCodeResult(HttpStatusCode.NotFound);
-
             List<VehicleMake> allMakes = await _service.GetAllVehicleMakes();
-            if (allMakes == null) return new HttpStatusCodeResult(HttpStatusCode.NotFound);
 
             var selectMakes = new SelectList(allMakes, "Id", "Name", makeId);
             VehicleMakeIndexViewModel indexVM= new VehicleMakeIndexViewModel
@@ -157,10 +153,6 @@ namespace MonoTask.MVC.Controllers
             }
 
             entity = _mapper.Map<TEntity>(vm);
-            if (entity == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
-            }
             return null;
         }
         //Helper for status messages

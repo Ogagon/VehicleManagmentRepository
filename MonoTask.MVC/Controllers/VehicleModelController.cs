@@ -25,12 +25,10 @@ namespace MonoTask.MVC.Controllers
         // GET: VehicleModels
         public async Task<ActionResult> Index(string sortColumn, string searchTerm, int? makeId, bool sortDescending = false, int page = 1, int pageSize = 10)
         {
-            if (string.IsNullOrEmpty(sortColumn)) sortColumn = "Name";
             var query = new VehicleQuery(sortColumn, sortDescending, searchTerm, makeId);
             var pagination = new PaginationRequest(page, pageSize);
 
             var pagedResult = await _service.GetAllVehicleModels(query, pagination);
-            if (pagedResult == null) return new HttpStatusCodeResult(HttpStatusCode.NotFound);
 
             SelectList makesList = new SelectList(await _service.GetAllVehicleMakes(), "Id", "Name", makeId);
 
@@ -53,7 +51,7 @@ namespace MonoTask.MVC.Controllers
             VehicleModel vehicleModel = await _service.GetVehicleModelById(id);
             if (vehicleModel == null)
             {
-                return HttpNotFound();
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
             VehicleModelViewModel vm = _mapper.Map<VehicleModelViewModel>(vehicleModel);
             return View(vm);
@@ -180,10 +178,6 @@ namespace MonoTask.MVC.Controllers
             }
 
             entity = _mapper.Map<TEntity>(vm);
-            if (entity == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
-            }
             return null;
         }
         //Helper da se ne ponavljam previše u kodu
