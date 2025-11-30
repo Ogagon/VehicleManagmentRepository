@@ -20,7 +20,7 @@ namespace MonoTask.Service.DTO
             };
         public VehicleQuery(string currentSortColumn, bool currentSortDescending, string currentSearchTerm, int? currentMakeId)
         {
-            if (!allowedSortingColumns.TryGetValue(currentSortColumn, out var sortColumn))
+            if (string.IsNullOrEmpty(currentSortColumn) || !allowedSortingColumns.TryGetValue(currentSortColumn, out var sortColumn))
             {
                 sortColumn = "Name";
             }

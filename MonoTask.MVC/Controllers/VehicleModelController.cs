@@ -25,7 +25,6 @@ namespace MonoTask.MVC.Controllers
         // GET: VehicleModels
         public async Task<ActionResult> Index(string sortColumn, string searchTerm, int? makeId, bool sortDescending = false, int page = 1, int pageSize = 10)
         {
-            if (string.IsNullOrEmpty(sortColumn)) sortColumn = "Name";
             var query = new VehicleQuery(sortColumn, sortDescending, searchTerm, makeId);
             var pagination = new PaginationRequest(page, pageSize);
 
