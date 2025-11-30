@@ -25,12 +25,14 @@ namespace MonoTask.MVC.Controllers
         // GET: VehicleModels
         public async Task<ActionResult> Index(string sortColumn, string searchTerm, int? makeId, bool sortDescending = false, int page = 1, int pageSize = 10)
         {
+            if (string.IsNullOrEmpty(sortColumn)) sortColumn = "Name";
             var query = new VehicleQuery(sortColumn, sortDescending, searchTerm, makeId);
             var pagination = new PaginationRequest(page, pageSize);
 
             var pagedResult = await _service.GetAllVehicleModels(query, pagination);
+            List<VehicleMake> allMakes = await _service.GetAllVehicleMakes();
 
-            SelectList makesList = new SelectList(await _service.GetAllVehicleMakes(), "Id", "Name", makeId);
+            SelectList makesList = new SelectList(allMakes, "Id", "Name", makeId);
 
             var indexVM = new VehicleModelIndexViewModel
             {
