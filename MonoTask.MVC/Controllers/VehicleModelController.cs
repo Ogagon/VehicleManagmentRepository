@@ -159,13 +159,10 @@ namespace MonoTask.MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            var model = await _service.GetVehicleModelById(id);
-            if (model == null) return new HttpStatusCodeResult(HttpStatusCode.NotFound, "Specified model doesn't exist!");
-
             var success = await _service.DeleteVehicleModel(id);
             if (!success) return new HttpStatusCodeResult(HttpStatusCode.NotFound, "The operation to remove the specified vehicle model failed!");
 
-            SetTempMessage($"Vehicle model {model.Name}({model.Abrv}) was removed successfully!");
+            SetTempMessage("Vehicle model was removed successfully!");
             return RedirectToAction("Index");
         }
 
