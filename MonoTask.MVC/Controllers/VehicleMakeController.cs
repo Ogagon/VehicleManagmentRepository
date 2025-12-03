@@ -72,7 +72,7 @@ namespace MonoTask.MVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            VehicleMake model = await _service.GetVehicleMakeById(id);
+            VehicleMake model = await _service.GetVehicleMakeById(id.Value);
             if (model == null) return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             VehicleMakeViewModel vm = _mapper.Map<VehicleMakeViewModel>(model);
             if (vm == null) return new HttpStatusCodeResult(HttpStatusCode.NotFound);
@@ -86,7 +86,7 @@ namespace MonoTask.MVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            VehicleMake vehicleMake = await _service.GetVehicleMakeById(id);
+            VehicleMake vehicleMake = await _service.GetVehicleMakeById(id.Value);
             if (vehicleMake == null) return new HttpStatusCodeResult(HttpStatusCode.NotFound);
 
             VehicleMakeViewModel vm = _mapper.Map<VehicleMakeViewModel>(vehicleMake);
@@ -122,7 +122,7 @@ namespace MonoTask.MVC.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound, "You need to specify an id for the item you want to delete.");
 
             }
-            VehicleMake model = await _service.GetVehicleMakeById(id);
+            VehicleMake model = await _service.GetVehicleMakeById(id.Value);
             if (model == null) return new HttpStatusCodeResult(HttpStatusCode.NotFound, $"Item with Id = {id} does not exist!");
 
             VehicleMakeViewModel vm = _mapper.Map<VehicleMakeViewModel>(model);

@@ -51,7 +51,7 @@ namespace MonoTask.Service.Services
             var pagedResult = new PagingResult<VehicleMake>(items, totalCount, pagination.Page, pagination.PageSize);
             return pagedResult;
         }
-        public async Task<VehicleMake> GetVehicleMakeById(int? id)
+        public async Task<VehicleMake> GetVehicleMakeById(int id)
         {
             var model = await _context.VehicleMakes.Include(m => m.Models).Where(m => m.Id == id).SingleOrDefaultAsync();
             return model;
@@ -124,7 +124,7 @@ namespace MonoTask.Service.Services
             
             return pagedResult;
         }
-        public async Task<VehicleModel> GetVehicleModelById(int? id)
+        public async Task<VehicleModel> GetVehicleModelById(int id)
         {
             var model = await _context.VehicleModels.FindAsync(id);
             return model;

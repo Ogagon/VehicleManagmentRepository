@@ -49,7 +49,7 @@ namespace MonoTask.MVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            VehicleModel vehicleModel = await _service.GetVehicleModelById(id);
+            VehicleModel vehicleModel = await _service.GetVehicleModelById(id.Value);
             if (vehicleModel == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
@@ -105,7 +105,7 @@ namespace MonoTask.MVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            VehicleModel vehicleModel = await _service.GetVehicleModelById(id);
+            VehicleModel vehicleModel = await _service.GetVehicleModelById(id.Value);
             if (vehicleModel == null)
             {
                 return HttpNotFound();
@@ -145,7 +145,7 @@ namespace MonoTask.MVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            VehicleModel vehicleModel = await _service.GetVehicleModelById(id);
+            VehicleModel vehicleModel = await _service.GetVehicleModelById(id.Value);
             if (vehicleModel == null)
             {
                 return HttpNotFound();

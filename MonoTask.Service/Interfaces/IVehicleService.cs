@@ -11,7 +11,7 @@ namespace MonoTask.Service.Interfaces
         // VehicleMake
         Task<List<VehicleMake>> GetAllVehicleMakes();
         Task<PagingResult<VehicleMake>> GetVehicleMakesByParameters(VehicleQuery query, PaginationRequest pagination);
-        Task<VehicleMake> GetVehicleMakeById(int? id);
+        Task<VehicleMake> GetVehicleMakeById(int id);
         Task<bool> CreateVehicleMake(VehicleMake make);
         Task<bool> EditVehicleMake(VehicleMake editedVehicleMake);
         Task<bool> DeleteVehicleMake(int makeToDelete);
@@ -19,7 +19,7 @@ namespace MonoTask.Service.Interfaces
 
         // VehicleModel
         Task<PagingResult<VehicleModel>> GetAllVehicleModels(VehicleQuery query, PaginationRequest pagination);
-        Task<VehicleModel> GetVehicleModelById(int? id);
+        Task<VehicleModel> GetVehicleModelById(int id);
         Task<bool> CreateVehicleModel(VehicleModel model);
         Task<bool> EditVehicleModel(VehicleModel editedVehicleModel);
         Task<bool> DeleteVehicleModel(int modelToDelete);
