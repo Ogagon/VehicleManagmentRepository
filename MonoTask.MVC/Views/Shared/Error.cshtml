@@ -1,10 +1,10 @@
 ﻿@{
-    ViewBag.Title = "_Error";
+    ViewBag.Title = "Error";
 }
 
-@if (TempData["Error"] != null)
+@if (ViewData["Error"] != null)
 {
-    <h2>@TempData["Error"]</h2>
+    <h2>@ViewData["Error"]</h2>
 }
 else
 {
