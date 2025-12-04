@@ -149,6 +149,7 @@
     <Content Include="Views\VehicleModel\Index.cshtml" />
     <Content Include="Views\Shared\_AlertMessage.cshtml" />
     <Content Include="Views\Shared\_Pagination.cshtml" />
+    <Content Include="Views\Shared\_Error.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

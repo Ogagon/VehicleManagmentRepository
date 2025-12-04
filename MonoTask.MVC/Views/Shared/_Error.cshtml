@@ -1,0 +1,13 @@
+﻿@{
+    ViewBag.Title = "_Error";
+}
+
+@if (TempData["Error"] != null)
+{
+    <h2>@TempData["Error"]</h2>
+}
+else
+{
+    <h2>An unexpected error has occured!</h2>
+}
+
