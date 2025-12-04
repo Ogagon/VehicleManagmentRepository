@@ -37,7 +37,6 @@ namespace MonoTask.MVC.Controllers
                 SelectMakes = selectMakes,
                 Query = query
             };
-
             return View(indexVM);
         }
         public ActionResult Create()
