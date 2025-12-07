@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.Web.Infrastructure.DynamicModuleHelper;
+using MonoTask.MVC.Logging;
 using MonoTask.Service.Context;
 using MonoTask.Service.Interfaces;
 using MonoTask.Service.Mappings;
@@ -66,6 +67,15 @@ namespace MonoTask.MVC.App_Start
             var mapper = config.CreateMapper();
 
             kernel.Bind<IMapper>().ToConstant(mapper);
+
+            //log4net binding
+            kernel.Bind<ILogger>()
+              .ToMethod(ctx =>
+              {
+                  var type = ctx.Request.Target?.Member.DeclaringType ?? typeof(object);
+                  return new Logger(type);
+              })
+              .InTransientScope();
         }
     }
 }

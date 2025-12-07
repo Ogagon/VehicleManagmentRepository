@@ -4,7 +4,8 @@
 
 @if (ViewData["Error"] != null)
 {
-    <h2>@ViewData["Error"]</h2>
+    <h2>An error has occured. The following error has interrupted the execution of the application:</h2>
+    <h3 style="color:red">@ViewData["Error"]</h3>
 }
 else
 {

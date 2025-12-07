@@ -16,10 +16,12 @@ namespace MonoTask.MVC.Controllers
     {
         private IVehicleService _service;
         private IMapper _mapper;
-        public VehicleModelController(IVehicleService service, IMapper mapper)
+        private ILogger _logger;
+        public VehicleModelController(IVehicleService service, IMapper mapper, ILogger logger)
         {
             _service = service ?? throw new ArgumentNullException(nameof(service));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         // GET: VehicleModels

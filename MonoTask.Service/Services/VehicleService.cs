@@ -16,10 +16,12 @@ namespace MonoTask.Service.Services
     {
         private readonly VehicleContext _context;
         private readonly IMapper _mapper;
-        public VehicleService(VehicleContext context, IMapper mapper)
+        private readonly ILogger _logger;
+        public VehicleService(VehicleContext context, IMapper mapper, ILogger logger)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(context));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
         #region VehicleMake
         //================================//
@@ -35,7 +37,7 @@ namespace MonoTask.Service.Services
             catch (Exception GetException)
             {
                 System.Diagnostics.Debug.WriteLine(GetException.Message);
-                return null;
+                throw;
             }
         }
         public async Task<PagingResult<VehicleMake>> GetVehicleMakesByParameters(VehicleQuery query, PaginationRequest pagination)
@@ -64,7 +66,7 @@ namespace MonoTask.Service.Services
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(ex.Message);
-                return new PagingResult<VehicleMake>(new List<VehicleMake>(), 0, 1, pagination.PageSize);
+                throw;           
             }
         }
         public async Task<VehicleMake> GetVehicleMakeById(int id)
@@ -77,7 +79,7 @@ namespace MonoTask.Service.Services
             catch (Exception GetException)
             {
                 System.Diagnostics.Debug.WriteLine(GetException.Message);
-                return null;
+                throw;
             }
         }
         public async Task<bool> EditVehicleMake(VehicleMake editedVehicleMake)
@@ -99,7 +101,7 @@ namespace MonoTask.Service.Services
             catch (Exception EditException)
             {
                 System.Diagnostics.Debug.WriteLine(EditException.Message);
-                return false;
+                throw;
             }
         }
         public async Task<bool> CreateVehicleMake(VehicleMake make)
@@ -116,7 +118,7 @@ namespace MonoTask.Service.Services
             catch (Exception CreateException)
             {
                 System.Diagnostics.Debug.WriteLine(CreateException.Message);
-                return false;
+                throw;
             }
         }
         public async Task<bool> DeleteVehicleMake(int makeToDelete)
@@ -135,7 +137,7 @@ namespace MonoTask.Service.Services
             catch (Exception DeleteException)
             {
                 System.Diagnostics.Debug.WriteLine(DeleteException.Message);
-                return false;
+                throw;
             }
         }
         public async Task<bool> CheckVehicleMakeForDuplicates(VehicleMake vehicleMake)
@@ -153,7 +155,7 @@ namespace MonoTask.Service.Services
             catch (Exception ValidationException)
             {
                 System.Diagnostics.Debug.WriteLine(ValidationException.Message);
-                return false;
+                throw;
             }
         }
         #endregion
@@ -189,7 +191,7 @@ namespace MonoTask.Service.Services
             catch (Exception GetException)
             {
                 System.Diagnostics.Debug.WriteLine(GetException.Message);
-                return new PagingResult<VehicleModel>(new List<VehicleModel>(), 0, 1, pagination.PageSize);
+                throw;
             }
         }
         public async Task<VehicleModel> GetVehicleModelById(int id)
@@ -202,7 +204,7 @@ namespace MonoTask.Service.Services
             catch (Exception GetException)
             {
                 System.Diagnostics.Debug.WriteLine(GetException.Message);
-                return null;
+                throw;
             }
         }
         public async Task<bool> CreateVehicleModel(VehicleModel model)
@@ -217,7 +219,7 @@ namespace MonoTask.Service.Services
             catch (Exception CreateException)
             {
                 System.Diagnostics.Debug.WriteLine(CreateException.Message);
-                return false;
+                throw;
             }
         }
         public async Task<bool> EditVehicleModel(VehicleModel editedVehicleModel)
@@ -240,7 +242,7 @@ namespace MonoTask.Service.Services
             catch (Exception EditException)
             {
                 System.Diagnostics.Debug.WriteLine(EditException.Message);
-                return false;
+                throw;
             }
         }
         public async Task<bool> DeleteVehicleModel(int modelToDelete)
@@ -258,7 +260,7 @@ namespace MonoTask.Service.Services
             catch (Exception DeleteException)
             {
                 System.Diagnostics.Debug.WriteLine(DeleteException.Message);
-                return false;
+                throw;
             }
         }
         public async Task<bool> CheckVehicleModelForDuplicates(VehicleModel vehicleModel)
@@ -277,7 +279,7 @@ namespace MonoTask.Service.Services
             catch (Exception ValidationException)
             {
                 System.Diagnostics.Debug.WriteLine(ValidationException.Message);
-                return false;
+                throw;
             }
         }
         #endregion

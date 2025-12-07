@@ -16,10 +16,12 @@ namespace MonoTask.MVC.Controllers
     {
         private readonly IVehicleService _service;
         private readonly IMapper _mapper;
-        public VehicleMakeController(IVehicleService service, IMapper mapper)
+        private readonly ILogger _logger;
+        public VehicleMakeController(IVehicleService service, IMapper mapper, ILogger logger)
         {
             _service = service ?? throw new ArgumentNullException(nameof(service));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
         // GET: VehicleModel
         public async Task<ActionResult> Index(string sortColumn, string searchTerm, int? makeId, bool sortDescending = false, int page = 1, int pageSize = 10)
@@ -37,6 +39,7 @@ namespace MonoTask.MVC.Controllers
                 SelectMakes = selectMakes,
                 Query = query
             };
+            _logger.Info("Entered vehicle makes index method");
             return View(indexVM);
         }
         public ActionResult Create()

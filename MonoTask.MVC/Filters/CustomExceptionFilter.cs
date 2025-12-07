@@ -10,7 +10,7 @@ namespace MonoTask.MVC.Filters
     {
         public void OnException(ExceptionContext filterContext)
         {
-            var errorMessage = "An error has occured. The following error has interrupted the execution of the application: " + filterContext.Exception.Message;
+            var errorMessage = filterContext.Exception.Message;
             filterContext.Result = new ViewResult
             {
                 ViewName = "~/Views/Shared/Error.cshtml",
