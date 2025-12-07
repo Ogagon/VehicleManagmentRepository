@@ -1,13 +1,10 @@
-﻿using AutoMapper;
-using MonoTask.Service.Context;
+﻿using MonoTask.Service.Context;
 using MonoTask.Service.DTO;
 using MonoTask.Service.Interfaces;
 using MonoTask.Service.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
-using System.Data.Entity.Validation;
 using System.Linq;
 using System.Linq.Dynamic;
 using System.Threading.Tasks;

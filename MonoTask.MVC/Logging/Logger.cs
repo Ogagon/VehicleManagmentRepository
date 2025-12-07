@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using log4net;
+﻿using log4net;
 using MonoTask.Service.Interfaces;
+using System;
 
 namespace MonoTask.MVC.Logging
 {
@@ -14,7 +11,7 @@ namespace MonoTask.MVC.Logging
         {
             _log = LogManager.GetLogger(type);
         }
-        public void Info (string message) => _log.Info(message);
+        public void Info(string message) => _log.Info(message);
         public void Warn(string message, Exception ex)
         {
             if (ex == null) _log.Warn(message);

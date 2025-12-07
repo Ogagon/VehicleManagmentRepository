@@ -1,7 +1,6 @@
 ﻿using MonoTask.Service.DTO;
 using MonoTask.Service.Models;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace MonoTask.Service.Interfaces

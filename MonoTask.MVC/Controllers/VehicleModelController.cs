@@ -90,12 +90,14 @@ namespace MonoTask.MVC.Controllers
             {
                 await PopulateMakesAsync(vm);
                 SetTempMessage($"Failed to create Vehicle model {newVehicleModel.Name}({newVehicleModel.Abrv}). Most likely, the specified model already exists!", "danger");
+                _logger.Warn($"Failed to create vehicle model of {newVehicleModel.Name}({newVehicleModel.Abrv}). Model already exists.");
                 return View(vm);
             }
             SetTempMessage($"Vehicle model {newVehicleModel.Name}({newVehicleModel.Abrv}) created successfully!");
+            _logger.Info($"Vehicle model of {newVehicleModel.Name}({newVehicleModel.Abrv}) created successfully");
             if (submitButton == "Save and Add another")
             {
-                return RedirectToAction("Create");
+                return RedirectToAction("Create", new {makeId = newVehicleModel.MakeId});
             }
             return RedirectToAction("Index");
         }
@@ -129,12 +131,14 @@ namespace MonoTask.MVC.Controllers
 
             if (status)
             {
-                SetTempMessage("Vehicle make update success!");
+                SetTempMessage("Vehicle model update success!");
+                _logger.Info($"Vehicle model {model.Name}({model.Abrv}) update success!");
                 return RedirectToAction("Index");
             }
             else
             {
-                ModelState.AddModelError("", "The input vehicle make already exists!");
+                ModelState.AddModelError("", "The input vehicle model already exists!");
+                _logger.Warn($"The input vehicle model {model.Name}({model.Abrv}) already exists!");
                 await PopulateMakesAsync(vm);
                 return View(vm);
             }
@@ -162,9 +166,13 @@ namespace MonoTask.MVC.Controllers
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
             var success = await _service.DeleteVehicleModel(id);
-            if (!success) return new HttpStatusCodeResult(HttpStatusCode.NotFound, "The operation to remove the specified vehicle model failed!");
-
+            if (!success)
+            {
+                _logger.Warn($"Failed to remove vehicle model with ID {id}.");
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound, "The operation to remove the specified vehicle model failed!");
+            }
             SetTempMessage("Vehicle model was removed successfully!");
+            _logger.Info($"Vehicle model with ID {id} was removed successfully.");
             return RedirectToAction("Index");
         }
 

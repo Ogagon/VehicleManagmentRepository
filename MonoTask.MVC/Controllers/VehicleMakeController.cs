@@ -33,13 +33,12 @@ namespace MonoTask.MVC.Controllers
             List<VehicleMake> allMakes = await _service.GetAllVehicleMakes();
 
             var selectMakes = new SelectList(allMakes, "Id", "Name", makeId);
-            VehicleMakeIndexViewModel indexVM= new VehicleMakeIndexViewModel
+            VehicleMakeIndexViewModel indexVM = new VehicleMakeIndexViewModel
             {
                 PagingResult = _mapper.Map<PagingResult<VehicleMakeViewModel>>(PagedMakes),
                 SelectMakes = selectMakes,
                 Query = query
             };
-            _logger.Info("Entered vehicle makes index method");
             return View(indexVM);
         }
         public ActionResult Create()
@@ -57,9 +56,11 @@ namespace MonoTask.MVC.Controllers
             if (!status)
             {
                 ModelState.AddModelError("", "The input vehicle make already exists!");
+                _logger.Warn($"Failed to create vehicle make of {model.Name}({model.Abrv}). Make already exists.");
                 return View(vm);
             }
             SetTempMessage($"Vehicle make {model.Name} ({model.Abrv}) created successfully!");
+            _logger.Info($"Vehicle make of {model.Name}({model.Abrv}) added successfully");
             if (submitButton == "Save and Add another")
             {
                 return RedirectToAction("Create");
@@ -108,11 +109,13 @@ namespace MonoTask.MVC.Controllers
             if (status)
             {
                 SetTempMessage("Vehicle make update success!");
+                _logger.Info($"Vehicle make {model.Name}({model.Abrv}) update success!");
                 return RedirectToAction("Index");
             }
             else
             {
                 ModelState.AddModelError("", "The input vehicle make already exists!");
+                _logger.Warn($"The input vehicle make {model.Name}({model.Abrv}) already exists!");
                 return View(vm);
             }
         }
@@ -136,9 +139,13 @@ namespace MonoTask.MVC.Controllers
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
             bool success = await _service.DeleteVehicleMake(id);
-            if (!success) return new HttpStatusCodeResult(HttpStatusCode.NotFound);
-
-            SetTempMessage($"Vehicle make was removed successfully!)");
+            if (!success)
+            {
+                _logger.Warn($"Failed to remove vehicle make with ID {id}.");
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
+            SetTempMessage($"Vehicle make was removed successfully!");
+            _logger.Info($"Vehicle make with ID {id} was removed successfully.");
             return RedirectToAction("Index");
         }
 

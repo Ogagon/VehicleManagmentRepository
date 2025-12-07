@@ -1,7 +1,7 @@
+using log4net.Config;
 using MonoTask.MVC.Filters;
 using System.Web.Mvc;
 using System.Web.Routing;
-using log4net.Config;
 
 namespace MonoTask.MVC
 {
@@ -13,7 +13,6 @@ namespace MonoTask.MVC
             GlobalFilters.Filters.Add(new CustomExceptionFilter());
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             XmlConfigurator.Configure();
-
         }
     }
 }
