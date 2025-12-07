@@ -15,7 +15,12 @@ namespace MonoTask.MVC.Logging
             _log = LogManager.GetLogger(type);
         }
         public void Info (string message) => _log.Info(message);
-        public void Warn(string message) => _log.Warn(message);
+        public void Warn(string message, Exception ex)
+        {
+            if (ex == null) _log.Warn(message);
+            else _log.Warn(message, ex);
+
+        }
         public void Error(string message, Exception ex = null)
         {
             if (ex == null) _log.Error(message);
