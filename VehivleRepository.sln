@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36705.20 d17.14
+VisualStudioVersion = 17.14.36705.20
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoTask.MVC", "MonoTask.MVC\MonoTask.MVC.csproj", "{F2F155A5-A2BC-4DFC-8894-5E98C8070660}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VehicleRepository.MVC", "MonoTask.MVC\VehicleRepository.MVC.csproj", "{F2F155A5-A2BC-4DFC-8894-5E98C8070660}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoTask.Service", "MonoTask.Service\MonoTask.Service.csproj", "{81566FAD-D724-45F1-9F34-7F2B89E68C27}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VehicleRepository.Service", "MonoTask.Service\VehicleRepository.Service.csproj", "{81566FAD-D724-45F1-9F34-7F2B89E68C27}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

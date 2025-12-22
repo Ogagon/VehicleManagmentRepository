@@ -97,7 +97,7 @@ namespace MonoTask.MVC.Controllers
             _logger.Info($"Vehicle model of {newVehicleModel.Name}({newVehicleModel.Abrv}) created successfully");
             if (submitButton == "Save and Add another")
             {
-                return RedirectToAction("Create", new {makeId = newVehicleModel.MakeId});
+                return RedirectToAction("Create", new { makeId = newVehicleModel.MakeId });
             }
             return RedirectToAction("Index");
         }

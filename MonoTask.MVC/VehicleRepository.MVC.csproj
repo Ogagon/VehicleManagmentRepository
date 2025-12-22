@@ -166,9 +166,9 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MonoTask.Service\MonoTask.Service.csproj">
+    <ProjectReference Include="..\MonoTask.Service\VehicleRepository.Service.csproj">
       <Project>{81566fad-d724-45f1-9f34-7f2b89e68c27}</Project>
-      <Name>MonoTask.Service</Name>
+      <Name>VehicleRepository.Service</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
